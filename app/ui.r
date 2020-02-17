@@ -9,7 +9,7 @@ ui <-
       
       dashboardSidebar(
         sidebarMenu(
-          menuItem("Menu1", tabName = "Menu1"),
+          menuItem("Map", tabName = "Map"),
           menuItem("Menu2", tabName = "Menu2"),
           menuItem("Menu3", tabName = "Menu3"),
           menuItem("Menu4", tabName = "Menu4")
@@ -18,8 +18,9 @@ ui <-
       
       dashboardBody(
         tabItems(
-          tabItem(tabName = "Menu1",
+          tabItem(tabName = "Map",
                   fluidPage(
+                    
                   )
           ),
           
