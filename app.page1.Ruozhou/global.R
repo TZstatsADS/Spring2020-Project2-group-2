@@ -7,7 +7,6 @@ library(shinydashboard)
 library(dplyr)
 library(shinyWidgets)
 
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-load("/Users/ruozhou_zhang/Documents/statistic_S02/GR5243_Applied_Data_Science/Spring2020-Project2-group-2/output/arrest_cleaned.RData")
+load("arrest_cleaned.RData")
 
 
