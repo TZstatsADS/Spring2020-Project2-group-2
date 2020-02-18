@@ -1,12 +1,15 @@
 
 shinyServer(function(input, output, session) {
   
+  # The data frame for the map
   df.map <- reactive({
     arrest.cleaned %>% 
       filter(OFNS_DESC == input$Map.crimetype) %>% 
-      filter(ARREST_DATE <= input$Map.endtime & ARREST_DATE >= input$Map.endtime)
+      filter(ARREST_DATE <= input$Map.endtime) %>% 
+      filter(ARREST_DATE >= input$Map.starttime)
   })
   
+  # The data frame for interaction between INPUTs
   df.map.updateselect <- reactive({
     arrest.cleaned %>% 
       filter(ARREST_DATE <= input$Map.endtime & ARREST_DATE >= input$Map.endtime)
@@ -15,12 +18,11 @@ shinyServer(function(input, output, session) {
   output$test <- renderText(input$Map.crimetype)
   
   observeEvent(input$Map.starttime, {
-    update.crimetype.zrz <- df.map.updateselect()$OFNS_DESC
-    #update.endtime.zrz <- df.map()$ARREST_DATE
+    update.crimetype.zrz <- df.map.updateselect()$OFNS_DESC %>% unique() %>% sort()
     updateSelectInput(session, 
                       "Map.crimetype", 
-                      choices = unique(update.crimetype.zrz), 
-                      selected = sort(unique(update.crimetype.zrz))[1])
+                      choices = update.crimetype.zrz, 
+                      selected = update.crimetype.zrz[1])
     if(input$Map.starttime > input$Map.endtime){
       updateDateInput(session, 
                       "Map.endtime",
@@ -31,12 +33,11 @@ shinyServer(function(input, output, session) {
   })
   
   observeEvent(input$Map.endtime, {
-    crimetype.zrz <- df.map.updateselect()$OFNS_DESC
-    #update.starttime.zrz <- df.map()$ARREST_DATE
+    update.crimetype.zrz <- df.map.updateselect()$OFNS_DESC %>% unique() %>% sort()
     updateSelectInput(session, 
                       "Map.crimetype", 
-                      choices = unique(crimetype.zrz), 
-                      selected = sort(unique(crimetype.zrz))[1])
+                      choices = update.crimetype.zrz, 
+                      selected = update.crimetype.zrz[1])
     if(input$Map.starttime > input$Map.endtime){
       updateDateInput(session,
                       "Map.starttime",
