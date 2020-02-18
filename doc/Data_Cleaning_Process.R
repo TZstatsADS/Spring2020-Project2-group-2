@@ -6,11 +6,11 @@ aaa %>%
   arrange(desc(count))-> a
 
 
-arrest <- read_csv("../data/NYPD_Arrests_Data__Historic_.csv")
+load("/Users/ruozhou_zhang/Documents/statistic_S02/GR5243_Applied_Data_Science/Spring2020-Project2-group-2/data/NYPD_Arrests_Data__Historic_.RData")
 
 arrest.cleaned <-
   arrest %>% 
-  select(-c("ARREST_KEY", "PD_CD", "PD_DESC", "KY_CD", "LAW_CODE" )) %>% 
+  dplyr::select(-c("ARREST_KEY", "PD_CD", "PD_DESC", "KY_CD", "LAW_CODE" )) %>% 
   na.omit() %>% 
   filter(OFNS_DESC != "") %>% 
   filter(ARREST_BORO != "") %>% 
@@ -91,8 +91,8 @@ arrest.cleaned <-
                                   "violate traffic laws" = c("intoxicated & impaired driving",
                                                              "other traffic infraction",
                                                              "unauthorized use of a vehicle 3 (uuv)",
-                                                             "vehicle and traffic laws")))
-  
+                                                             "vehicle and traffic laws"))) %>% 
+  mutate(ARREST_DATE = as.character(ARREST_DATE) %>% as.Date("%m/%d/%Y"))
 
 
 save(arrest.cleaned, file = "/Users/ruozhou_zhang/Documents/statistic_S02/GR5243_Applied_Data_Science/Spring2020-Project2-group-2/output/arrest_cleaned.RData")
