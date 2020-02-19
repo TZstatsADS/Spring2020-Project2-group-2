@@ -78,8 +78,7 @@ shinyServer(function(input, output, session) {
                        options = providerTileOptions(noWrap = T)) %>% 
       setView(lng = -73.99,lat = 40.72,zoom = 12) %>%
       addHeatmap(lng = ar.dt_by_date$Longitude,lat = ar.dt_by_date$Latitude,
-                 intensity = ifelse(ar.dt_by_date$LAW_CAT_CD=="FELONY",10,
-                                    ifelse(ar.dt_by_date$LAW_CAT_CD=="MISDEMEANOR",4,1)),
+                 intensity = nrow(ar.dt_by_date),
                  blur = 15, max = 0.05,radius = 12)%>% 
       addResetMapButton()
     
