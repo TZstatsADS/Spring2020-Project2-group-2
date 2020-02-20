@@ -11,7 +11,7 @@ ui <-
         sidebarMenu(
           menuItem("Map", tabName = "Map"),
           menuItem("Animation", tabName = "Animation"),
-          menuItem("Menu3", tabName = "Menu3"),
+          menuItem("Animation2", tabName = "Animation2"),
           menuItem("Menu4", tabName = "Menu4"),
           menuItem("Menu5", tabName = "Menu5")
         )
@@ -57,6 +57,11 @@ ui <-
                                   choices = unique(arrest.cleaned$ARREST_BORO),
                                   selected = "Manhattan",
                                   multiple = T)
+                    ),
+                    box(
+                      withAnim(),
+                      tags$div(id = 'animate', 'ANIMATION'),
+                      actionButton(inputId = "button", label = "Animate")
                     )
                   ),
                   fluidRow(
@@ -68,10 +73,28 @@ ui <-
                   ) # map
           ),
           
-          tabItem(tabName = "Menu3",
+          tabItem(tabName = "Animation2",
                   fluidRow(
-                    
-                  ) 
+                    box(
+                      width = 6,
+                      height = 80,
+                      selectInput(inputId = "Ani2.crimetype", label = "Crime Type",
+                                  choices = sort(unique(arrest.cleaned$OFNS_DESC)),
+                                  selected = "drug dealing",
+                                  multiple = T)
+                    ),
+                    absolutePanel(top = 50, right = 20,
+                                  sliderInput("ani.time", "Year", min = 2006, 
+                                              max = 2018, value = 2016, step = 1, 
+                                              animate = animationOptions(interval = 500, loop = FALSE)))
+                  ),
+                  fluidRow(
+                    box(
+                      width = 12,
+                      height = 700,
+                      leafletOutput("map2.njy", height = 680)
+                    )
+                  ) # map
           ),
           
           tabItem(tabName = "Menu4",
