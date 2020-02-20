@@ -6,7 +6,7 @@ library(shinydashboard)
 #library(tidyverse)
 library(dplyr)
 library(shinyWidgets)
+library(viridis)
 
 load("arrest_cleaned.RData")
-
 
