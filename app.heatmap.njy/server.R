@@ -17,14 +17,14 @@ shinyServer(function(input, output, session) {
   
   
   # Animation 
-  dt.map <- reactive({
+  dt.map.njy <- reactive({
     arrest.cleaned %>% 
       filter(OFNS_DESC == input$Ani.crimetype) %>% 
       filter(ARREST_DATE <= input$Ani.enddate & ARREST_DATE >= input$Ani.startdate)%>% 
       filter(ARREST_BORO == input$Ani.region)
   })
   
-  dt.map.updateselect <- reactive({
+  dt.map.updateselect.njy <- reactive({
     arrest.cleaned %>% 
       filter(ARREST_DATE <= input$Ani.enddate & ARREST_DATE >= input$Ani.startdate)%>% 
       filter(ARREST_BORO == input$Ani.region)
@@ -33,13 +33,13 @@ shinyServer(function(input, output, session) {
   output$test <- renderText(input$Ani.crimetype)
   
   observeEvent(input$Ani.startdate, {
-    update.crimetype.njy <- dt.map.updateselect()$OFNS_DESC
+    update.crimetype.njy <- dt.map.updateselect.njy()$OFNS_DESC
     #update.endtime.zrz <- df.map()$ARREST_DATE
     updateSelectInput(session, 
                       "Ani.crimetype", 
                       choices = unique(update.crimetype.njy), 
-                      selected = ifelse(input$Anim.crimetype %in% unique(update.crimetype.njy),
-                                        input$Anim.crimetype, sort(unique(update.crimetype.njy))[1]))
+                      selected = ifelse(input$Ani.crimetype %in% unique(update.crimetype.njy),
+                                        input$Ani.crimetype, sort(unique(update.crimetype.njy))[1]))
     if(input$Ani.startdate > input$Ani.enddate){
       updateDateInput(session, 
                       "Ani.enddate",
@@ -50,13 +50,13 @@ shinyServer(function(input, output, session) {
   })
   
   observeEvent(input$Ani.enddate, {
-    crimetype.njy <- dt.map.updateselect()$OFNS_DESC
+    crimetype.njy <- dt.map.updateselect.njy()$OFNS_DESC
     #update.starttime.zrz <- df.map()$ARREST_DATE
     updateSelectInput(session, 
                       "Ani.crimetype", 
                       choices = unique(crimetype.njy), 
-                      selected = ifelse(input$Anim.crimetype %in% unique(crimetype.njy),
-                                        input$Anim.crimetype, sort(unique(crimetype.njy))[1]))
+                      selected = ifelse(input$Ani.crimetype %in% unique(crimetype.njy),
+                                        input$Ani.crimetype, sort(unique(crimetype.njy))[1]))
     if(input$Ani.startdate > input$Ani.enddate){
       updateDateInput(session,
                       "Ani.startdate",
@@ -67,6 +67,13 @@ shinyServer(function(input, output, session) {
     }
   })
   
+  
+  observeEvent(input$button,{
+    startAnim(session, 'animate', 'bounce')
+  })
+  
+  
+  
   output$map.njy <- renderLeaflet({
     
     ar.dt_by_date <- subset(arrest.cleaned,
@@ -76,17 +83,38 @@ shinyServer(function(input, output, session) {
       leaflet(width = "100%") %>%
       addProviderTiles("Esri.WorldTopoMap",
                        options = providerTileOptions(noWrap = T)) %>% 
-      setView(lng = -73.99,lat = 40.72,zoom = 12) %>%
+      setView(lng = -73.99,lat = 40.72,zoom = 11) %>%
       addHeatmap(lng = ar.dt_by_date$Longitude,lat = ar.dt_by_date$Latitude,
                  intensity = nrow(ar.dt_by_date),
-                 blur = 15, max = 0.05,radius = 12)%>% 
+                 blur = 15, max = 0.05,radius = 10)%>% 
       addResetMapButton()
     
   })
   
   
   
+  # Animation2 
+  dt.map2.njy <- reactive({
+    arrest.cleaned.njy %>% 
+      filter(OFNS_DESC == input$Ani2.crimetype) %>% 
+      filter(year %in% input$ani.time)
+  })
   
+  
+  output$map2.njy <- renderLeaflet({
+    
+    ar.dt_by_date2 <- dt.map2.njy()
+    
+    ar.dt_by_date2 %>%
+      leaflet(width = "100%") %>%
+      addProviderTiles("Esri.WorldTopoMap",
+                       options = providerTileOptions(noWrap = T)) %>% 
+      setView(lng = -73.99,lat = 40.72,zoom = 11) %>%
+      addHeatmap(lng = ar.dt_by_date2$Longitude,lat = ar.dt_by_date2$Latitude,
+                 intensity = nrow(ar.dt_by_date2),
+                 blur = 15, max = 0.05,radius = 10)
+    
+  })
   
   
   
