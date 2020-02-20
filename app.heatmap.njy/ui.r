@@ -86,7 +86,7 @@ ui <-
                     absolutePanel(top = 50, right = 20,
                                   sliderInput("ani.time", "Year", min = 2006, 
                                               max = 2018, value = 2016, step = 1, 
-                                              animate = animationOptions(interval = 500, loop = FALSE)))
+                                              animate = animationOptions(interval = 600, loop = FALSE)))
                   ),
                   fluidRow(
                     box(
