@@ -17,25 +17,24 @@ shinyServer(function(input, output, session) {
   
   
   # Animation 
-   
-  dt.map2.njy <- reactive({
+  dt.map.njy <- reactive({
     arrest.cleaned.njy %>% 
-      filter(OFNS_DESC == input$Ani2.crimetype) %>% 
+      filter(OFNS_DESC == input$Ani.crimetype) %>% 
       filter(year %in% input$ani.time)
   })
   
   
-  output$map2.njy <- renderLeaflet({
+  output$map.njy <- renderLeaflet({
     
-    ar.dt_by_date2 <- dt.map2.njy()
+    ar.dt_by_date <- dt.map.njy()
     
-    ar.dt_by_date2 %>%
+    ar.dt_by_date %>%
       leaflet(width = "100%") %>%
       addProviderTiles("Esri.WorldTopoMap",
                        options = providerTileOptions(noWrap = T)) %>% 
       setView(lng = -73.99,lat = 40.72,zoom = 11) %>%
-      addHeatmap(lng = ar.dt_by_date2$Longitude,lat = ar.dt_by_date2$Latitude,
-                 intensity = nrow(ar.dt_by_date2),
+      addHeatmap(lng = ar.dt_by_date$Longitude,lat = ar.dt_by_date$Latitude,
+                 intensity = nrow(ar.dt_by_date),
                  blur = 15, max = 0.05,radius = 10)
     
   })

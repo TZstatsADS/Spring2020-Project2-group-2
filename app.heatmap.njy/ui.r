@@ -34,7 +34,7 @@ ui <-
                     box(
                       width = 6,
                       height = 80,
-                      selectInput(inputId = "Ani2.crimetype", label = "Crime Type",
+                      selectInput(inputId = "Ani.crimetype", label = "Crime Type",
                                   choices = sort(unique(arrest.cleaned$OFNS_DESC)),
                                   selected = "drug dealing",
                                   multiple = T)
@@ -42,13 +42,13 @@ ui <-
                     absolutePanel(top = 50, right = 20,
                                   sliderInput("ani.time", "Year", min = 2006, 
                                               max = 2018, value = 2016, step = 1, 
-                                              animate = animationOptions(interval = 600, loop = FALSE)))
+                                              animate = animationOptions(interval = 500, loop = FALSE)))
                   ),
                   fluidRow(
                     box(
                       width = 12,
                       height = 700,
-                      leafletOutput("map2.njy", height = 680)
+                      leafletOutput("map.njy", height = 680)
                     )
                   ) # map
           ),
