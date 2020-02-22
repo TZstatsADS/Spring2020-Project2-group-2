@@ -10,8 +10,8 @@ ui <-
       dashboardSidebar(
         sidebarMenu(
           menuItem("Map", tabName = "Map"),
+          menuItem("Menu2", tabName = "Menu2"),
           menuItem("Animation", tabName = "Animation"),
-          menuItem("Animation2", tabName = "Animation2"),
           menuItem("Menu4", tabName = "Menu4"),
           menuItem("Menu5", tabName = "Menu5")
         )
@@ -24,56 +24,12 @@ ui <-
                   )
           ),
           
-          tabItem(tabName = "Animation",
+          tabItem(tabName = "Menu2",
                   fluidRow(
-                    box(
-                      width = 6,
-                      height = 80,
-                      dateInput(inputId = "Ani.startdate",label = "Start Date",
-                                value = "2018-01-01",format = "yyyy-mm-dd",
-                                min = min(arrest.cleaned$ARREST_DATE),
-                                max = max(arrest.cleaned$ARREST_DATE))
-                    ),
-                    box(
-                      width = 6,
-                      height = 80,
-                      dateInput(inputId = "Ani.enddate",label = "End Date",
-                                value = "2018-01-31",format = "yyyy-mm-dd",
-                                min = min(arrest.cleaned$ARREST_DATE),
-                                max = max(arrest.cleaned$ARREST_DATE))
-                    ),
-                    box(
-                      width = 6,
-                      height = 80,
-                      selectInput(inputId = "Ani.crimetype", label = "Crime Type",
-                                  choices = sort(unique(arrest.cleaned$OFNS_DESC)),
-                                  selected = "drug dealing",
-                                  multiple = T)
-                    ),
-                    box(
-                      width = 3,
-                      height = 80,
-                      selectInput(inputId = "Ani.region", label = "Borough",
-                                  choices = unique(arrest.cleaned$ARREST_BORO),
-                                  selected = "Manhattan",
-                                  multiple = T)
-                    ),
-                    box(
-                      withAnim(),
-                      tags$div(id = 'animate', 'ANIMATION'),
-                      actionButton(inputId = "button", label = "Animate")
-                    )
-                  ),
-                  fluidRow(
-                    box(
-                      width = 12,
-                      height = 700,
-                      leafletOutput("map.njy", height = 680)
-                    )
-                  ) # map
+                  )
           ),
           
-          tabItem(tabName = "Animation2",
+          tabItem(tabName = "Animation",
                   fluidRow(
                     box(
                       width = 6,
