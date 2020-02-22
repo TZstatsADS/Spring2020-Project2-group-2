@@ -10,8 +10,8 @@ ui <-
       dashboardSidebar(
         sidebarMenu(
           menuItem("Map", tabName = "Map"),
+          menuItem("Menu2", tabName = "Menu2"),
           menuItem("Animation", tabName = "Animation"),
-          menuItem("Menu3", tabName = "Menu3"),
           menuItem("Menu4", tabName = "Menu4"),
           menuItem("Menu5", tabName = "Menu5")
         )
@@ -24,24 +24,13 @@ ui <-
                   )
           ),
           
+          tabItem(tabName = "Menu2",
+                  fluidRow(
+                  )
+          ),
+          
           tabItem(tabName = "Animation",
                   fluidRow(
-                    box(
-                      width = 6,
-                      height = 80,
-                      dateInput(inputId = "Ani.startdate",label = "Start Date",
-                                value = "2018-01-01",format = "yyyy-mm-dd",
-                                min = min(arrest.cleaned$ARREST_DATE),
-                                max = max(arrest.cleaned$ARREST_DATE))
-                    ),
-                    box(
-                      width = 6,
-                      height = 80,
-                      dateInput(inputId = "Ani.enddate",label = "End Date",
-                                value = "2018-01-31",format = "yyyy-mm-dd",
-                                min = min(arrest.cleaned$ARREST_DATE),
-                                max = max(arrest.cleaned$ARREST_DATE))
-                    ),
                     box(
                       width = 6,
                       height = 80,
@@ -50,14 +39,10 @@ ui <-
                                   selected = "drug dealing",
                                   multiple = T)
                     ),
-                    box(
-                      width = 3,
-                      height = 80,
-                      selectInput(inputId = "Ani.region", label = "Borough",
-                                  choices = unique(arrest.cleaned$ARREST_BORO),
-                                  selected = "Manhattan",
-                                  multiple = T)
-                    )
+                    absolutePanel(top = 50, right = 20,
+                                  sliderInput("Ani.time", "Year", min = 2006, 
+                                              max = 2018, value = 2016, step = 1, 
+                                              animate = animationOptions(interval = 500, loop = FALSE)))
                   ),
                   fluidRow(
                     box(
@@ -66,12 +51,6 @@ ui <-
                       leafletOutput("map.njy", height = 680)
                     )
                   ) # map
-          ),
-          
-          tabItem(tabName = "Menu3",
-                  fluidRow(
-                    
-                  ) 
           ),
           
           tabItem(tabName = "Menu4",
@@ -88,6 +67,10 @@ ui <-
         )
       )
     )
+
+
+
+
 
 
 

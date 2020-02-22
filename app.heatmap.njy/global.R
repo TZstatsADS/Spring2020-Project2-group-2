@@ -6,8 +6,8 @@ library(leaflet.extras)
 #library(tidyverse)
 library(dplyr)
 library(shinyWidgets)
+library(shinyanimate)
+library(lubridate)
 
 load('../output/arrest_cleaned.RData')
-
-dt.ar <- as.data.frame(arrest.cleaned)
 

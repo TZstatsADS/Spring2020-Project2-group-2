@@ -9,9 +9,9 @@ ui <-
       
       dashboardSidebar(
         sidebarMenu(
-          menuItem("Map", tabName = "Map"),
-          menuItem("Menu2", tabName = "Menu2"),
-          menuItem("Menu3", tabName = "Menu3"),
+          menuItem("Map", tabName = "Map", icon = icon("map")),
+          menuItem("Menu2", tabName = "Menu2", icon = icon("chart-line")),
+          menuItem("Menu3", tabName = "Menu3", icon = icon("chart-pie")),
           menuItem("Menu4", tabName = "Menu4")
         )
       ),
@@ -34,7 +34,7 @@ ui <-
                       height = 80,
                       dateInput("Map.endtime",
                                 "End Time",
-                                value = "2018-01-31",
+                                value = "2018-01-02",
                                 min = min(arrest.cleaned$ARREST_DATE),
                                 max = max(arrest.cleaned$ARREST_DATE))
                     ),
@@ -44,7 +44,7 @@ ui <-
                       selectInput("Map.crimetype",
                                   "Type of Crime",
                                   choices = sort(unique(arrest.cleaned$OFNS_DESC)),
-                                  selected = "drug dealing",
+                                  selected = sort(unique(arrest.cleaned$OFNS_DESC))[1],
                                   multiple = T)
                     )
                   ),# select boxes end here
