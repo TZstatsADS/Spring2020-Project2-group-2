@@ -17,10 +17,12 @@ shinyServer(function(input, output, session) {
   
   
   # Animation 
+  
   dt.map.njy <- reactive({
-    arrest.cleaned.njy %>% 
-      filter(OFNS_DESC == input$Ani.crimetype) %>% 
-      filter(year %in% input$ani.time)
+    arrest.cleaned %>%
+      mutate(year = year(as.Date(ARREST_DATE,origin = "1970-01-01"))) %>%
+      filter(OFNS_DESC %in% input$Ani.crimetype) %>% 
+      filter(year == input$Ani.time)
   })
   
   
