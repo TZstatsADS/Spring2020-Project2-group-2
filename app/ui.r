@@ -11,12 +11,17 @@ ui <-
         sidebarMenu(
           menuItem("Map", tabName = "Map", icon = icon("map")),
           menuItem("TimeSeries", tabName = "TimeSeries", icon = icon("chart-line")),
-          menuItem("Menu3", tabName = "Menu3", icon = icon("chart-pie")),
+          menuItem("PieChart", tabName = "PieChart", icon = icon("chart-pie")),
           menuItem("Menu4", tabName = "Menu4")
         )
       ),
       
       dashboardBody(
+        tags$style(type="text/css",
+                        ".shiny-output-error { visibility: hidden; }",
+                        ".shiny-output-error:before { visibility: hidden; }"
+          ),
+        
         tabItems(
           tabItem(tabName = "Map",
                   fluidRow(
@@ -78,8 +83,28 @@ ui <-
                   )
           ),
           
-          tabItem(tabName = "Menu3",
+          tabItem(tabName = "PieChart",
                   fluidPage(
+                    fluidRow(
+                      # year
+                      column(6,
+                             selectInput(inputId = "choose_year",label ="choose a year",
+                                         choices = unique(as.character(arrest.cleaner$year)))
+                      ),
+                      # borough
+                      column(6,
+                             selectInput(inputId = "choose_borough",label ="choose a borough",
+                                         choices = unique(as.character(arrest.cleaner$arrest_boro)))
+                      ),
+                      # crime type
+                      column(6,
+                             selectInput(inputId = "choose_type",label ="choose a type",
+                                         choices = unique(as.character(arrest.cleaner$ofns_desc)))
+                      ),
+                    ),
+                    fluidRow(
+                      plotlyOutput("plot"), align="center"
+                    ),
                   )
           ),
           
