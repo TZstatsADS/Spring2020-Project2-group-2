@@ -40,7 +40,7 @@ ui <-
                                   multiple = T)
                     ),
                     absolutePanel(top = 50, right = 20,
-                                  sliderInput("ani.time", "Year", min = 2006, 
+                                  sliderInput("Ani.time", "Year", min = 2006, 
                                               max = 2018, value = 2016, step = 1, 
                                               animate = animationOptions(interval = 500, loop = FALSE)))
                   ),
@@ -67,6 +67,8 @@ ui <-
         )
       )
     )
+
+
 
 
 
