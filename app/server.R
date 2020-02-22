@@ -50,6 +50,19 @@ shinyServer(function(input, output, session) {
   
   output$map.zrz <- renderLeaflet({
     
+    centerColor <- function(dt){
+      sapply(dt$LAW_CAT_CD, function(juris) {
+        if(juris == "Others") {
+          "white"
+        } else if(juris == "Housing") {
+          "brown"
+        } else if(juris == "Transit"){
+          "green"
+        } else{
+          "black"
+        } })
+    }
+
     iconColor <- function(quakes) {
       sapply(quakes$LAW_CAT_CD, function(off) {
         if((off == "Violation") | (off == "Infraction")) {
@@ -61,23 +74,10 @@ shinyServer(function(input, output, session) {
         } })
     }
     
-    centerColor <- function(dt){
-      sapply(quakes$LAW_CAT_CD, function(juris) {
-        if(juris == "Others") {
-          "white"
-        } else if(juris == "Housing") {
-          "brown"
-        } else if(juris == "Transit"){
-          "green"
-        } else{
-          "black"
-        } })
-    }
-    
     icons <-
       awesomeIcons(
         icon = 'ios-close',
-        iconColor = centerColor,
+        iconColor = centerColor(df.map()),
         library = 'ion',
         markerColor = iconColor(df.map())
       )
@@ -115,7 +115,13 @@ shinyServer(function(input, output, session) {
     }
   })
 
-  ######## Heat map Page
-  
+  ######## Pie Chart Page
+  output$plot <- renderPlotly({
+    
+    y<-input$choose_year
+    type<-input$choose_type
+    borough<-input$choose_borough
+    
+    pie_chart(y = y, borough = borough, type = type) 
+  })
 })
-
