@@ -8,7 +8,7 @@ library(dplyr)
 library(shinyWidgets)
 library(ggplot2)
 library(lubridate)
-
+library(plotly)
 
 
 setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
@@ -103,7 +103,69 @@ aa<-function(data,y){
   return(g)
 }
 
+#########################################################Global for Pie Chart
+arrest.cleaner <- arrest.cleaned %>% 
+  
+  rename_all(tolower) %>%
+  filter (
+    !(age_group !="<18" & age_group != "18-24" &  age_group != "25-44" &  age_group != "45-64" & age_group != "65+")
+  ) %>% 
+  mutate(year = year(arrest_date)) %>%
+  mutate(year = sort(year, decreasing = T))
 
+
+
+
+pie_chart <- function(y, borough, type){
+  sex <- arrest.cleaner %>% 
+    filter(year == y) %>%
+    filter(arrest_boro == borough) %>%
+    filter(ofns_desc == type) %>%
+    group_by(perp_sex) %>% count()
+  
+  race <- arrest.cleaner %>% 
+    filter(year == y) %>%
+    filter(arrest_boro == borough) %>%
+    filter(ofns_desc == type) %>%
+    group_by(perp_race) %>% count()
+  
+  age <- arrest.cleaner %>% 
+    filter(year == y) %>%
+    filter(arrest_boro == borough) %>%
+    filter(ofns_desc == type) %>%
+    group_by(age_group) %>% count()
+  
+  colors <- c('rgb(211,94,96)', 'rgb(128,133,133)', 'rgb(144,103,167)', 'rgb(171,104,87)', 'rgb(114,147,203)')
+  
+  p <- plot_ly() %>%
+    add_pie(data = sex, labels = ~perp_sex, values = ~n,
+            textinfo = 'label+percent',
+            name = "Sex",
+            title = "Perpetrator Sex Distribution Chart",
+            marker = list(colors=colors,
+                          line = list(color = '#FFFFFF', width = 1)),
+            domain = list(x = c(0, 0.4), y = c(0.4, 1))) %>%
+    add_pie(data = race, labels = ~perp_race, values = ~ n,
+            textinfo = 'label+percent',
+            name = "Race",
+            showlegend = T,
+            title = "Perpetrator Race Distribution Chart",
+            marker = list(#colors=colors,
+              line = list(color = '#FFFFFF', width = 1)),
+            domain = list(x = c(0.25, 0.75), y = c(0, 0.6))) %>%
+    add_pie(data = age, labels = ~age_group, values = ~ n,
+            textinfo = 'label+percent',
+            name = "Age",
+            title = "Perpetrator Age Distribution Chart",
+            marker = list(#colors=colors,
+              line = list(color = '#FFFFFF', width = 1)),
+            domain = list(x = c(0.6, 1), y = c(0.4, 1))) %>%
+    layout(title = "Pie Chart Summary of Perpetrator Data", showlegend = F,
+           xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
+           yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
+  
+  return(p)
+}
 
 
 
