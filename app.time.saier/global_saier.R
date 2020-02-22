@@ -5,9 +5,10 @@ library(tidyverse)
 library(lubridate)
 
 
-arrest<-arrest.cleaned %>%
-  mutate(year=year(ARREST_DATE),
-         month=month(ARREST_DATE))
+#load("arrest_cleaned.RData")
+
+################################################ Global for Time series
+
 
 
 pp<-function(data,type,borough,y){
@@ -17,7 +18,6 @@ pp<-function(data,type,borough,y){
     filter(year==y) %>%
     filter(OFNS_DESC==type) %>%
     filter(ARREST_BORO==borough)
-    
   
   g<-ggplot(data=df,mapping = aes(x=month,y=n))+
     geom_point(color="orange",size=10)+
@@ -28,14 +28,13 @@ pp<-function(data,type,borough,y){
     scale_x_continuous(breaks = seq(1,12,by=1))+
     theme_light()+
     theme(plot.title = element_text(hjust = 0.5))
-    
-    return(g)
+  
+  return(g)
 }
-
 
 #type is all
 tt<-function(data,borough,y){
-  df<-arrest %>%
+  df<-data %>%
     group_by(year,month,ARREST_BORO)%>%
     count()%>%
     filter(year==y) %>%
@@ -54,10 +53,9 @@ tt<-function(data,borough,y){
   return(g)
 }
 
-
 #borough is all
 qq<-function(data,type,y){
-  df<-arrest %>%
+  df<-data %>%
     group_by(year,month,OFNS_DESC) %>%
     count() %>%
     filter(year==y) %>%
@@ -75,12 +73,10 @@ qq<-function(data,type,y){
   
   return(g)
 }
- 
-
 
 #type and borough all are all
 aa<-function(data,y){
-  df<-arrest %>%
+  df<-data %>%
     group_by(year,month) %>%
     count() %>%
     filter(year==y)
@@ -96,8 +92,4 @@ aa<-function(data,y){
     theme(plot.title = element_text(hjust = 0.5))
   
   return(g)
-  
-  
-  
 }
-  
