@@ -100,47 +100,32 @@ aa<-function(data,y){
 
 
 #########################################################Global for Pie Chart
-data <- function(dat){
-  arrest.cleaner <- dat %>% 
-    
+
+pie_chart <- function(y, borough, type){
+  dat <- arrest.cleaned %>% 
     rename_all(tolower) %>%
-    
     filter (
       !(age_group !="<18" & age_group != "18-24" &  age_group != "25-44" &  age_group != "45-64" & age_group != "65+")
     ) %>% 
-    
     mutate(year = year(arrest_date)) %>%
-    mutate(year = sort(year, decreasing = T))
-  
-  return(arrest.cleaner)
-}
-pie_chart <- function(y, borough, type){
-  sex <- data(arrest.cleaned) %>% 
+    mutate(year = sort(year, decreasing = T)) %>% 
     filter(year == y) %>%
     filter(arrest_boro == borough) %>%
-    filter(ofns_desc == type) %>%
+    filter(ofns_desc == type)
+  
+  sex <- dat %>% 
     group_by(perp_sex) %>% count()
   
-  race <- data(arrest.cleaned) %>% 
-    filter(year == y) %>%
-    filter(arrest_boro == borough) %>%
-    filter(ofns_desc == type) %>%
+  race <- dat %>% 
     group_by(perp_race) %>% count()
   
-  age <- data(arrest.cleaned) %>% 
-    filter(year == y) %>%
-    filter(arrest_boro == borough) %>%
-    filter(ofns_desc == type) %>%
+  age <- dat %>% 
     group_by(age_group) %>% count()
   
   colors <- c('rgb(211,94,96)', 'rgb(128,133,133)', 'rgb(144,103,167)', 'rgb(171,104,87)', 'rgb(114,147,203)')
   p <- plot_ly() %>%
     add_pie(data = sex, labels = ~perp_sex, values = ~n,
-            #textposition = 'inside',
             textinfo = 'label+percent',
-            #insidetextfont = list(color = '#FFFFFF'),
-            # hoverinfo = 'text',
-            # text = ~paste(perp_sex, ":", n),
             name = "Sex",
             title = "Perpetrator Sex Distribution Chart",
             marker = list(colors=colors,
