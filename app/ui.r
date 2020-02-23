@@ -10,8 +10,8 @@ ui <-
       dashboardSidebar(
         sidebarMenu(
           menuItem("Map", tabName = "Map", icon = icon("map"),
-                   menuSubItem("Crime Map", tabName = "Map", icon = icon("crime")),
-                   menuSubItem("Heat Map", tabName = "Animation", icon = ("clock"))),
+                   menuSubItem("Crime Map", tabName = "Map"),
+                   menuSubItem("Heat Map", tabName = "Animation")),
           menuItem("TimeSeries", tabName = "TimeSeries", icon = icon("chart-line")),
           menuItem("PieChart", tabName = "PieChart", icon = icon("chart-pie"))
         )
