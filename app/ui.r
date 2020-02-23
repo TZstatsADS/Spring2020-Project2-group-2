@@ -12,7 +12,7 @@ ui <-
           menuItem("Map", tabName = "Map", icon = icon("map")),
           menuItem("TimeSeries", tabName = "TimeSeries", icon = icon("chart-line")),
           menuItem("PieChart", tabName = "PieChart", icon = icon("chart-pie")),
-          menuItem("Menu4", tabName = "Menu4")
+          menuItem("Animation", tabName = "Animation", icon = icon("clock"))
         )
       ),
       
@@ -71,10 +71,10 @@ ui <-
                       
                       column(6,
                              selectInput(inputId = "choice_type",label ="choose a type",
-                                         choices =c(unique(as.character(arrest$OFNS_DESC)),"ALL"))),
+                                         choices =c(unique(as.character(arrest.cleaned$OFNS_DESC)),"ALL"))),
                       
                       column(6,
-                             selectInput(inputId = "choice_borough",label = "choose a borough",choices =c(unique(arrest$ARREST_BORO),"ALL")))
+                             selectInput(inputId = "choice_borough",label = "choose a borough",choices =c(unique(arrest.cleaned$ARREST_BORO),"ALL")))
                     ),
                     
                     fluidRow(
@@ -83,33 +83,51 @@ ui <-
                   )
           ),
           
-          tabItem(tabName = "PieChart",
+          tabItem(tabName = "Menu3",
                   fluidPage(
                     fluidRow(
                       # year
                       column(6,
                              selectInput(inputId = "choose_year",label ="choose a year",
-                                         choices = unique(as.character(arrest.cleaner$year)))
+                                         choices = unique(as.character(data(arrest.cleaned)$year)))
                       ),
                       # borough
                       column(6,
                              selectInput(inputId = "choose_borough",label ="choose a borough",
-                                         choices = unique(as.character(arrest.cleaner$arrest_boro)))
+                                         choices = unique(as.character(data(arrest.cleaned)$arrest_boro)))
                       ),
                       # crime type
                       column(6,
                              selectInput(inputId = "choose_type",label ="choose a type",
-                                         choices = unique(as.character(arrest.cleaner$ofns_desc)))
+                                         choices = unique(as.character(data(arrest.cleaned)$ofns_desc)))
                       ),
                     ),
                     fluidRow(
                       plotlyOutput("plot"), align="center"
-                    ),
+                    )
                   )
           ),
-          
-          tabItem(tabName = "Menu4",
-                  fluidPage(
+          tabItem(tabName = "Animation",
+                  fluidRow(
+                    box(
+                      width = 6,
+                      height = 80,
+                      selectInput(inputId = "Ani.crimetype", label = "Crime Type",
+                                  choices = sort(unique(arrest.cleaned$OFNS_DESC)),
+                                  selected = "drug dealing",
+                                  multiple = T)
+                    ),
+                    absolutePanel(top = 50, right = 20,
+                                  sliderInput("Ani.time", "Year", min = 2006, 
+                                              max = 2018, value = 2016, step = 1, 
+                                              animate = animationOptions(interval = 500, loop = FALSE)))
+                  ),
+                  fluidRow(
+                    box(
+                      width = 12,
+                      height = 700,
+                      leafletOutput("map.njy", height = 680)
+                    )
                   )
           )
         )
