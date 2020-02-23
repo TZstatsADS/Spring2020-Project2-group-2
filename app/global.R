@@ -10,9 +10,7 @@ library(ggplot2)
 library(lubridate)
 library(plotly)
 
-
-setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
-load("/Users/ruozhou_zhang/Documents/statistic_S02/GR5243_Applied_Data_Science/Spring2020-Project2-group-2/output/arrest_cleaned.RData")
+load("arrest_cleaned.RData")
 
 ################################################ Global for Time series
 pp<-function(data,type,borough,y){
@@ -100,6 +98,16 @@ aa<-function(data,y){
 
 
 #########################################################Global for Pie Chart
+data <- function(dat){
+  arrest.cleaner <- dat %>% 
+    rename_all(tolower) %>%
+    filter (
+      !(age_group !="<18" & age_group != "18-24" &  age_group != "25-44" &  age_group != "45-64" & age_group != "65+")
+    ) %>% 
+    mutate(year = year(arrest_date)) %>%
+    mutate(year = sort(year, decreasing = T))
+  return(arrest.cleaner)
+}
 
 pie_chart <- function(y, borough, type){
   dat <- arrest.cleaned %>% 
