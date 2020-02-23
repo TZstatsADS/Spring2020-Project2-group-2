@@ -15,11 +15,6 @@ setwd(dirname(rstudioapi::getActiveDocumentContext()$path))
 load("/Users/ruozhou_zhang/Documents/statistic_S02/GR5243_Applied_Data_Science/Spring2020-Project2-group-2/output/arrest_cleaned.RData")
 
 ################################################ Global for Time series
-
-arrest<-arrest.cleaned %>%
-  mutate(year=year(ARREST_DATE),
-         month=month(ARREST_DATE))
-
 pp<-function(data,type,borough,y){
   df<-data %>%
     group_by(year,month,OFNS_DESC,ARREST_BORO) %>%
@@ -43,7 +38,7 @@ pp<-function(data,type,borough,y){
 
 #type is all
 tt<-function(data,borough,y){
-  df<-arrest %>%
+  df<-data %>%
     group_by(year,month,ARREST_BORO)%>%
     count()%>%
     filter(year==y) %>%
@@ -64,7 +59,7 @@ tt<-function(data,borough,y){
 
 #borough is all
 qq<-function(data,type,y){
-  df<-arrest %>%
+  df<-data %>%
     group_by(year,month,OFNS_DESC) %>%
     count() %>%
     filter(year==y) %>%
@@ -85,7 +80,7 @@ qq<-function(data,type,y){
 
 #type and borough all are all
 aa<-function(data,y){
-  df<-arrest %>%
+  df<-data %>%
     group_by(year,month) %>%
     count() %>%
     filter(year==y)
@@ -103,70 +98,84 @@ aa<-function(data,y){
   return(g)
 }
 
+
 #########################################################Global for Pie Chart
-arrest.cleaner <- arrest.cleaned %>% 
+data <- function(dat){
+  arrest.cleaner <- dat %>% 
+    
+    rename_all(tolower) %>%
+    
+    filter (
+      !(age_group !="<18" & age_group != "18-24" &  age_group != "25-44" &  age_group != "45-64" & age_group != "65+")
+    ) %>% 
+    
+    mutate(year = year(arrest_date)) %>%
+    mutate(year = sort(year, decreasing = T))
   
-  rename_all(tolower) %>%
-  filter (
-    !(age_group !="<18" & age_group != "18-24" &  age_group != "25-44" &  age_group != "45-64" & age_group != "65+")
-  ) %>% 
-  mutate(year = year(arrest_date)) %>%
-  mutate(year = sort(year, decreasing = T))
-
-
-
-
+  return(arrest.cleaner)
+}
 pie_chart <- function(y, borough, type){
-  sex <- arrest.cleaner %>% 
+  sex <- data(arrest.cleaned) %>% 
     filter(year == y) %>%
     filter(arrest_boro == borough) %>%
     filter(ofns_desc == type) %>%
     group_by(perp_sex) %>% count()
   
-  race <- arrest.cleaner %>% 
+  race <- data(arrest.cleaned) %>% 
     filter(year == y) %>%
     filter(arrest_boro == borough) %>%
     filter(ofns_desc == type) %>%
     group_by(perp_race) %>% count()
   
-  age <- arrest.cleaner %>% 
+  age <- data(arrest.cleaned) %>% 
     filter(year == y) %>%
     filter(arrest_boro == borough) %>%
     filter(ofns_desc == type) %>%
     group_by(age_group) %>% count()
   
   colors <- c('rgb(211,94,96)', 'rgb(128,133,133)', 'rgb(144,103,167)', 'rgb(171,104,87)', 'rgb(114,147,203)')
-  
   p <- plot_ly() %>%
     add_pie(data = sex, labels = ~perp_sex, values = ~n,
+            #textposition = 'inside',
             textinfo = 'label+percent',
+            #insidetextfont = list(color = '#FFFFFF'),
+            # hoverinfo = 'text',
+            # text = ~paste(perp_sex, ":", n),
             name = "Sex",
             title = "Perpetrator Sex Distribution Chart",
             marker = list(colors=colors,
                           line = list(color = '#FFFFFF', width = 1)),
             domain = list(x = c(0, 0.4), y = c(0.4, 1))) %>%
+    #domain = list(row = 0, column = 0)) %>%
     add_pie(data = race, labels = ~perp_race, values = ~ n,
+            #textposition = 'inside',
             textinfo = 'label+percent',
+            #insidetextfont = list(color = '#FFFFFF'),
+            # hoverinfo = 'text',
+            # text = ~paste(perp_race,":", n),
             name = "Race",
             showlegend = T,
             title = "Perpetrator Race Distribution Chart",
             marker = list(#colors=colors,
               line = list(color = '#FFFFFF', width = 1)),
             domain = list(x = c(0.25, 0.75), y = c(0, 0.6))) %>%
+    #domain = list(row = 0, column = 1)) %>%
     add_pie(data = age, labels = ~age_group, values = ~ n,
+            #textposition = 'inside',
             textinfo = 'label+percent',
+            #insidetextfont = list(color = '#FFFFFF'),
+            # hoverinfo = 'text',
+            # text = ~paste(age_group,":", n),
             name = "Age",
             title = "Perpetrator Age Distribution Chart",
             marker = list(#colors=colors,
               line = list(color = '#FFFFFF', width = 1)),
             domain = list(x = c(0.6, 1), y = c(0.4, 1))) %>%
+    #domain = list(row = 0, column = 2)) %>%
     layout(title = "Pie Chart Summary of Perpetrator Data", showlegend = F,
+           #grid=list(rows=1, columns=3),
            xaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE),
            yaxis = list(showgrid = FALSE, zeroline = FALSE, showticklabels = FALSE))
   
   return(p)
 }
-
-
-
-
