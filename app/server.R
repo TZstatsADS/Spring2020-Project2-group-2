@@ -99,19 +99,24 @@ shinyServer(function(input, output, session) {
   })
   
   #### Time Series Graph
+  df.timeseries<-reactive({
+    arrest.cleaned %>%
+      mutate(year=year(ARREST_DATE),
+             month=month(ARREST_DATE))
+  })
   output$ggplot<-renderPlot({
     y<-input$year
     type<-input$choice_type
     borough<-input$choice_borough
     
     if(type=="ALL"&borough=="ALL"){
-      return(aa(data=arrest,y=y))
+      return(aa(data=df.timeseries(),y=y))
     }else if(type=="ALL"&borough!="ALL"){
-      return(tt(data=arrest,borough=borough,y=y))
+      return(tt(data=df.timeseries(),borough=borough,y=y))
     }else if(type!="ALL"&borough=="ALL"){
-      return(qq(data=arrest,type=type,y=y))
+      return(qq(data=df.timeseries(),type=type,y=y))
     }else{
-      return(pp(data=arrest,type = type,borough=borough,y=y))
+      return(pp(data=df.timeseries(),type = type,borough=borough,y=y))
     }
   })
 
@@ -124,4 +129,29 @@ shinyServer(function(input, output, session) {
     
     pie_chart(y = y, borough = borough, type = type) 
   })
+  
+  ######### Animation
+  dt.map.njy <- reactive({
+    arrest.cleaned %>%
+      mutate(year = year(as.Date(ARREST_DATE,origin = "1970-01-01"))) %>%
+      filter(OFNS_DESC %in% input$Ani.crimetype) %>% 
+      filter(year == input$Ani.time)
+  })
+
+  output$map.njy <- renderLeaflet({
+    
+    ar.dt_by_date <- dt.map.njy()
+    
+    ar.dt_by_date %>%
+      leaflet(width = "100%") %>%
+      addProviderTiles("Esri.WorldTopoMap",
+                       options = providerTileOptions(noWrap = T)) %>% 
+      setView(lng = -73.99,lat = 40.72,zoom = 11) %>%
+      addHeatmap(lng = ar.dt_by_date$Longitude,lat = ar.dt_by_date$Latitude,
+                 intensity = nrow(ar.dt_by_date),
+                 blur = 15, max = 0.05,radius = 10)
+    
+  })
+  
+  
 })
