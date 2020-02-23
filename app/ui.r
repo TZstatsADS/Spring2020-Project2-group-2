@@ -9,19 +9,18 @@ ui <-
       
       dashboardSidebar(
         sidebarMenu(
-          menuItem("Map", tabName = "Map", icon = icon("map")),
+          menuItem("Map", tabName = "Map", icon = icon("map"),
+                   menuSubItem("Crime Map", tabName = "Map", icon = icon("crime")),
+                   menuSubItem("Heat Map", tabName = "Animation", icon = ("clock"))),
           menuItem("TimeSeries", tabName = "TimeSeries", icon = icon("chart-line")),
-          menuItem("PieChart", tabName = "PieChart", icon = icon("chart-pie")),
-          menuItem("Animation", tabName = "Animation", icon = icon("clock"))
+          menuItem("PieChart", tabName = "PieChart", icon = icon("chart-pie"))
         )
       ),
-      
       dashboardBody(
         tags$style(type="text/css",
                         ".shiny-output-error { visibility: hidden; }",
                         ".shiny-output-error:before { visibility: hidden; }"
           ),
-        
         tabItems(
           tabItem(tabName = "Map",
                   fluidRow(
@@ -82,8 +81,7 @@ ui <-
                     )
                   )
           ),
-          
-          tabItem(tabName = "Menu3",
+          tabItem(tabName = "PieChart",
                   fluidPage(
                     fluidRow(
                       # year
