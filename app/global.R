@@ -96,25 +96,16 @@ aa<-function(data,y){
   return(g)
 }
 
-
 #########################################################Global for Pie Chart
 data <- function(dat){
-  arrest.cleaner <- dat %>% 
-    rename_all(tolower) %>%
-    filter (
-      !(age_group !="<18" & age_group != "18-24" &  age_group != "25-44" &  age_group != "45-64" & age_group != "65+")
-    ) %>% 
-    mutate(year = year(arrest_date)) %>%
-    mutate(year = sort(year, decreasing = T))
+  arrest.cleaner <- dat %>%
+    mutate(YEAR = year(ARREST_DATE))
   return(arrest.cleaner)
 }
 
 pie_chart <- function(y, borough, type){
   dat <- arrest.cleaned %>% 
     rename_all(tolower) %>%
-    filter (
-      !(age_group !="<18" & age_group != "18-24" &  age_group != "25-44" &  age_group != "45-64" & age_group != "65+")
-    ) %>% 
     mutate(year = year(arrest_date)) %>%
     mutate(year = sort(year, decreasing = T)) %>% 
     filter(year == y) %>%
