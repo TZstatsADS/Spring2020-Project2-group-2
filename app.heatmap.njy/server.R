@@ -22,7 +22,7 @@ shinyServer(function(input, output, session) {
     arrest.cleaned %>%
       mutate(year = year(as.Date(ARREST_DATE,origin = "1970-01-01"))) %>%
       filter(OFNS_DESC %in% input$Ani.crimetype) %>% 
-      filter(year == input$Ani.time)
+      filter(year %in% input$Ani.time)
   })
   
   
@@ -36,7 +36,8 @@ shinyServer(function(input, output, session) {
                        options = providerTileOptions(noWrap = T)) %>% 
       setView(lng = -73.99,lat = 40.72,zoom = 11) %>%
       addHeatmap(lng = ar.dt_by_date$Longitude,lat = ar.dt_by_date$Latitude,
-                 intensity = nrow(ar.dt_by_date),
+                 intensity = ifelse(nrow(ar.dt_by_date)>10,10,
+                                    ifelse(nrow(ar.dt_by_date)>5,5,1)),
                  blur = 15, max = 0.05,radius = 10)
     
   })
@@ -45,4 +46,3 @@ shinyServer(function(input, output, session) {
   
   
 })
-

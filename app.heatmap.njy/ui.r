@@ -37,12 +37,14 @@ ui <-
                       selectInput(inputId = "Ani.crimetype", label = "Crime Type",
                                   choices = sort(unique(arrest.cleaned$OFNS_DESC)),
                                   selected = "drug dealing",
-                                  multiple = T)
+                                  multiple = F)
                     ),
                     absolutePanel(top = 50, right = 20,
-                                  sliderInput("Ani.time", "Year", min = 2006, 
-                                              max = 2018, value = 2016, step = 1, 
-                                              animate = animationOptions(interval = 500, loop = FALSE)))
+                                  sliderInput("Ani.time", "Year", min = min(year(as.Date(arrest.cleaned$ARREST_DATE,origin = "1970-01-01"))), 
+                                              max = max(year(as.Date(arrest.cleaned$ARREST_DATE,origin = "1970-01-01"))), 
+                                              value = c(min(year(as.Date(arrest.cleaned$ARREST_DATE,origin = "1970-01-01"))),min(year(as.Date(arrest.cleaned$ARREST_DATE,origin = "1970-01-01")))), 
+                                              step = 1, 
+                                              animate = animationOptions(interval = 2000, loop = FALSE)))
                   ),
                   fluidRow(
                     box(
@@ -67,10 +69,6 @@ ui <-
         )
       )
     )
-
-
-
-
 
 
 
