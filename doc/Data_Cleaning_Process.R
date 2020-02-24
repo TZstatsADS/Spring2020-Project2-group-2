@@ -92,7 +92,8 @@ arrest.cleaned <-
                                                              "other traffic infraction",
                                                              "unauthorized use of a vehicle 3 (uuv)",
                                                              "vehicle and traffic laws"))) %>% 
-  mutate(ARREST_DATE = as.character(ARREST_DATE) %>% as.Date("%m/%d/%Y"))
-
+  mutate(ARREST_DATE = as.character(ARREST_DATE) %>% as.Date("%m/%d/%Y")) %>% 
+  filter(AGE_GROUP %in% c("<18", "18-24", "25-44", "45-64", "65+")) %>% 
+  filter(ARREST_DATE >= as.Date("2013-01-01"))
 
 save(arrest.cleaned, file = "/Users/ruozhou_zhang/Documents/statistic_S02/GR5243_Applied_Data_Science/Spring2020-Project2-group-2/output/arrest_cleaned.RData")
