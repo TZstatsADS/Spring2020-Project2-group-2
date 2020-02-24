@@ -13,14 +13,16 @@ ui <-
                    menuSubItem("Crime Map", tabName = "Map"),
                    menuSubItem("Heat Map", tabName = "Animation")),
           menuItem("TimeSeries", tabName = "TimeSeries", icon = icon("chart-line")),
-          menuItem("PieChart", tabName = "PieChart", icon = icon("chart-pie"))
+          menuItem("PieChart", tabName = "PieChart", icon = icon("chart-pie")),
+          menuItem("More Info", tabName = "More Info", icon = icon("info"))
         )
       ),
+      
       dashboardBody(
         tags$style(type="text/css",
                         ".shiny-output-error { visibility: hidden; }",
                         ".shiny-output-error:before { visibility: hidden; }"
-          ),
+        ),
         tabItems(
           tabItem(tabName = "Map",
                   fluidRow(
@@ -87,17 +89,17 @@ ui <-
                       # year
                       column(6,
                              selectInput(inputId = "choose_year",label ="choose a year",
-                                         choices = unique(as.character(data(arrest.cleaned)$year)))
+                                         choices = unique(as.character(data(arrest.cleaned)$YEAR)) %>% sort())
                       ),
                       # borough
                       column(6,
                              selectInput(inputId = "choose_borough",label ="choose a borough",
-                                         choices = unique(as.character(data(arrest.cleaned)$arrest_boro)))
+                                         choices = unique(as.character(data(arrest.cleaned)$ARREST_BORO)))
                       ),
                       # crime type
                       column(6,
                              selectInput(inputId = "choose_type",label ="choose a type",
-                                         choices = unique(as.character(data(arrest.cleaned)$ofns_desc)))
+                                         choices = unique(as.character(data(arrest.cleaned)$OFNS_DESC)))
                       ),
                     ),
                     fluidRow(
@@ -113,12 +115,14 @@ ui <-
                       selectInput(inputId = "Ani.crimetype", label = "Crime Type",
                                   choices = sort(unique(arrest.cleaned$OFNS_DESC)),
                                   selected = "drug dealing",
-                                  multiple = T)
+                                  multiple = F)
                     ),
                     absolutePanel(top = 50, right = 20,
-                                  sliderInput("Ani.time", "Year", min = 2006, 
-                                              max = 2018, value = 2016, step = 1, 
-                                              animate = animationOptions(interval = 500, loop = FALSE)))
+                                  sliderInput("Ani.time", "Year", min = min(year(as.Date(arrest.cleaned$ARREST_DATE,origin = "1970-01-01"))), 
+                                              max = max(year(as.Date(arrest.cleaned$ARREST_DATE,origin = "1970-01-01"))), 
+                                              value = c(min(year(as.Date(arrest.cleaned$ARREST_DATE,origin = "1970-01-01"))),min(year(as.Date(arrest.cleaned$ARREST_DATE,origin = "1970-01-01")))), 
+                                              step = 1, 
+                                              animate = animationOptions(interval = 2000, loop = FALSE)))
                   ),
                   fluidRow(
                     box(
@@ -126,7 +130,7 @@ ui <-
                       height = 700,
                       leafletOutput("map.njy", height = 680)
                     )
-                  )
+                  ) # map
           )
         )
       )
