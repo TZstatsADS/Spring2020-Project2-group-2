@@ -93,7 +93,10 @@ shinyServer(function(input, output, session) {
                         popup = ~ paste0("<b>",ARREST_DATE,"</b>",
                                          "<br/>", "Crime Type: ", OFNS_DESC,
                                          "<br/>", "Level of Offence: ", LAW_CAT_CD,
-                                         "<br/>", "Juriscition: ", JURISDICTION_CODE),
+                                         "<br/>", "Juriscition: ", JURISDICTION_CODE,
+                                         "<br/>", "Gendar: ", PERP_SEX,
+                                         "<br/>", "Age: ", AGE_GROUP,
+                                         "<br/>", "Race: ", PERP_RACE),
                         icon = icons)
     map
   })
