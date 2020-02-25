@@ -71,15 +71,16 @@ ui <-
                   fluidPage(
                     fluidRow(
                       column(6,
-                             sliderInput(inputId = "year",label = "Choose a year",value =min(year(arrest.cleaned$ARREST_DATE)),step=1,
+                             sliderInput(inputId = "year",label = "Choose a year",value =max(year(arrest.cleaned$ARREST_DATE)),step=1,
                                          min = min(year(arrest.cleaned$ARREST_DATE)),max = max(year(arrest.cleaned$ARREST_DATE)))),
                       
                       column(6,
                              selectInput(inputId = "choice_type",label ="choose a type",
-                                         choices =c(unique(as.character(arrest.cleaned$OFNS_DESC)),"ALL"))),
+                                         choices =c(sort(unique(as.character(arrest.cleaned$OFNS_DESC))),"ALL"))),
                       
                       column(6,
-                             selectInput(inputId = "choice_borough",label = "choose a borough",choices =c(unique(arrest.cleaned$ARREST_BORO),"ALL")))
+                             selectInput(inputId = "choice_borough",label = "choose a borough",
+                                         choices =c(sort(unique(arrest.cleaned$ARREST_BORO)),"ALL")))
                     ),
                     
                     fluidRow(
