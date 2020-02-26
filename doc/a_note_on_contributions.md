@@ -1,20 +1,21 @@
 ### A Note on Contributions
 
-Whenever we have team projects, there are always concerns on unequal contributions from members of a project team. In the ideal world, we are all here to put in our best efforts and learn together. Even in that ideal world, we have different skill sets and preparations, and we will still contribute differently to a project. 
-
-Therefore, you are required to post a *contribution statement* in the root README.md of your GitHub repo. Please beware that your GitHub repo will become public and remain public after the due date of the projects. 
-
-Post your title, team members, project abstract and a contribution statement in the README.md file.  This is a common practice for research scientific journals. 
-
-Below is an example. If no contribution statement is provided, we will insert a default statement that goes "**All team members contributed equally in all stages of this project. All team members approve our work presented in this GitHub repository including this contributions statement**. "
 
 ---
-Sample project README statement.
 
-Project xxx
 
-Team members: Avi Bond, Comma Deed, En Funn, Gem Hon
+Project 2
 
-Summary: In this project, we developed a new method and improved the classification accuracy for images of cats and dogs to 99.9%
+Team 2
 
-[Contribution Statement] AB, CD, EF and GH designed the study. AB and CD developed baseline classification model for evaluation. EF and GH explored feature engineering for improving the baseline model. AB, EF and GH discussed and designed the model evaluation protocol. CD carried out the computation for model evaluation. All team members contributed to the GitHub repository and prepared the presentation. All team members approve our work presented in our GitHub repository including this contribution statement.
+Team members: Lu Cheng, Saier Gong, Jiayun Ni, Tianning Yu, Ruozhou Zhang, David Heagy
+
+Summary: In this project, we build a application about NYC Arrest Data.
+
+[Contribution Statement] :
++ **Lu Cheng** plotted pie charts for different boroughs, years and crime types, and completed the related part of the app.
++ **Saier Gong** completed the Timeseries Page, both the ui and server parts, together with the plots, and also helped Ruozhou to do data cleaning and debug, and managed the readme file.
++ **Jiayun Ni** contributed to data selection and theme determination, and put forward the idea of heat map page; was also responsible for the heat map and the animation of heat map part on Map-Heat_Map Page; recleaned and reactivated the data, and coded up ui and server file for the animation process of heat map.
++ **Tianning Yu** did data collection, page design, testing and debugging.
++ **Ruozhou Zhang** contributed to the data cleaning process by coding up the Data_Cleaning_Process.R; also coded up the Basic ui structure and the Map-Crime_Map Page; and also contributed to putting all the pages together, as well as optimizing the code for lower time complexity.
++ **David Heagy** found the dataset on open NYC and contributed ideas for design, and worked on initial piecharts, wrote and edited text in introduction.
