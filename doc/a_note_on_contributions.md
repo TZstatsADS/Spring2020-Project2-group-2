@@ -10,7 +10,7 @@ Team 2
 
 Team members: Lu Cheng, Saier Gong, Jiayun Ni, Tianning Yu, Ruozhou Zhang, David Heagy
 
-Summary: In this project, we build a application about NYC Arrest Data.
+Summary: In this project, we build an application about NYC Arrest Data.
 
 [Contribution Statement] :
 + **Lu Cheng** plotted pie charts for different boroughs, years and crime types, and completed the related part of the app.
